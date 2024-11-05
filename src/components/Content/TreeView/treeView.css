@@ -1,0 +1,43 @@
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #8b8b8b #f1f1f1;
+}
+
+.scrollbar:hover {
+  scrollbar-width: thin;
+  scrollbar-color: #616161 #f1f1f1;
+  cursor: pointer;
+  transition: scrollbar-color 0.3s ease;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8b8b8b;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background-color: #707070;
+}
+
+/* styles.css */
+@keyframes slow-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.slow-spin {
+  animation: slow-spin 2s linear infinite; /* Duração da animação: 2 segundos */
+}

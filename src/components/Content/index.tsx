@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 
-import { handleBuildTree } from "@/helpers/tree"
-
 import { getAssets } from "@/libs/assets"
 import { getLocations } from "@/libs/locations"
-
-import { LocationTreeNode } from "@/types"
 
 import CompanyHeader from "./CompanyHeader"
 import TreeView from "./TreeView"
 
 export default function Content() {
-  const [treeView, setTreeView] = useState<LocationTreeNode[]>([])
   const searchParams = useSearchParams()
   const companyId = searchParams.get('companyId')
 
@@ -31,23 +25,12 @@ export default function Content() {
     enabled: !!companyId,
   })
 
-  useEffect(() => {
-    if (assets && locations) {
-      const treeViewBuilded = handleBuildTree({
-        assets,
-        locations
-      })
-
-      setTreeView(treeViewBuilded)
-    }
-  }, [assets, locations])
-
   return (
     <div className="m-2 bg-white overflow-y-auto border-[#D8DFE6] border rounded-sm p-4">
       <CompanyHeader />
 
       <div className="flex w-full">
-        <TreeView treeView={treeView} />
+        <TreeView assets={assets} locations={locations} />
 
         <div className="flex-1">
 

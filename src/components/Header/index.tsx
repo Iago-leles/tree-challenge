@@ -1,5 +1,7 @@
-import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect } from "react"
+import Image from "next/image"
 
 import { getCompanies } from "@/libs/companies"
 
@@ -7,11 +9,11 @@ import logoImage from "@/public/logo.png"
 import goldIcon from "@/public/icons/gold.svg"
 
 import CompanyButton from "../CompanyButton"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 
 export default function Header() {
   const { push } = useRouter();
+  const searchParams = useSearchParams()
+  const companyId = searchParams.get('companyId')
 
   const { data, isFetching } = useQuery({
     queryFn: () => getCompanies(),
@@ -20,12 +22,12 @@ export default function Header() {
   })
 
   useEffect(() => {
-    if (data && data.length > 0) {
+    if (data && data.length > 0 && !companyId) {
       const company = data[0];
 
       push(`?companyId=${company.id}&companyName=${company.name}`);
     }
-  }, [data])
+  }, [companyId, data, push])
 
   const handleCompanies = () => {
     if (isFetching) {

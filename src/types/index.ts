@@ -12,18 +12,21 @@ export interface ILocation {
 export interface IAsset {
   id: string;
   name: string;
-  gatewayId: string;
-  locationId: string | null;
-  parentId: string | null;
-  sensorId: string | null;
-  sensorType: string | null;
-  status: string | null;
+  parentId?: string | null;
+  sensorId?: string | null;
+  sensorType?: string | null;
+  status?: string | null;
+  gatewayId?: string | null;
+  locationId?: string | null;
+  type: string;
+  children: Array<ILocation | IAsset>;
 }
 
 interface TreeNode {
   id: string;
   name: string;
   children: TreeNode[];
+  type: string;
 }
 
 export type AssetTreeNode = TreeNode & {
