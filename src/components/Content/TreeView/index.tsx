@@ -1,4 +1,4 @@
-import { IconLoader } from "@tabler/icons-react";
+import { IconLoader, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 
 import useBuildTree from "@/hooks/useBuildTree";
@@ -11,9 +11,11 @@ import './treeView.css'
 export default function TreeView({
   assets,
   locations,
+  isFetching
 }: {
   assets?: IAsset[];
   locations?: ILocation[];
+  isFetching?: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const {
@@ -42,10 +44,18 @@ export default function TreeView({
     : treeView;
 
   const handleTreeViewContent = () => {
-    if (isLoading) {
+    if (isLoading || isFetching) {
       return (
         <div className="flex items-center w-[100%] justify-center h-[60%]">
           <IconLoader className="slow-spin" color="blue" />
+        </div>
+      );
+    }
+
+    if (treeView.length && filteredTree.length === 0) {
+      return (
+        <div className="flex items-center w-[100%] justify-center h-[20%]">
+          <p className="text-gray-800">Nenhum resultado encontrado</p>
         </div>
       );
     }
@@ -59,13 +69,17 @@ export default function TreeView({
 
   return (
     <div className="border-[#D8DFE6] w-[40%] h-[82vh] border rounded-sm">
-      <input
-        type="text"
-        placeholder="Buscar Ativo ou Local"
-        className="border-b border-[#D8DFE6] focus:outline-none w-full p-3 text-gray-800 placeholder-[#C1C9D2]"
-        value={searchTerm}
-        onChange={handleSearch}
-      />
+      <div className="border-b border-[#D8DFE6] w-full p-3 flex items-center">
+        <input
+          type="text"
+          placeholder="Buscar Ativo ou Local"
+          className="focus:outline-none w-full  text-gray-800 placeholder-[#C1C9D2]"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+
+        <IconSearch color="#363C44" size={16} cursor='pointer' />
+      </div>
 
       {handleTreeViewContent()}
     </div>

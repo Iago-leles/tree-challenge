@@ -9,6 +9,8 @@ import locationIcon from "@/public/icons/location.svg";
 import assetIcon from "@/public/icons/asset.svg";
 import componentIcon from "@/public/icons/component.svg";
 
+import OperatingStatus from "./OperatingStatus";
+
 type TreeNodeProps = {
   node: LocationTreeNode;
 };
@@ -19,9 +21,13 @@ export default function TreeNode({ node }: TreeNodeProps) {
   const hasChildren = node.children && node.children.length > 0;
 
   const getIcon = () => {
-    if (node.type === "asset") return assetIcon;
-    if (node.type === "component") return componentIcon;
-    return locationIcon;
+    const icons = {
+      asset: assetIcon,
+      component: componentIcon,
+      location: locationIcon,
+    }
+
+    return icons[node.type as keyof typeof icons];
   };
 
   return (
@@ -42,6 +48,8 @@ export default function TreeNode({ node }: TreeNodeProps) {
         <Image src={getIcon()} alt="icon" className="w-5 h-5 mr-2" />
 
         <p className="text-md text-gray-800">{node.name}</p>
+
+        <OperatingStatus node={node} />
       </div>
 
       {hasChildren && (

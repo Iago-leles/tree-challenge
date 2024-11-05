@@ -11,14 +11,14 @@ export default function Content() {
   const searchParams = useSearchParams()
   const companyId = searchParams.get('companyId')
 
-  const { data: assets } = useQuery({
+  const { data: assets, isFetching: isFetchingAssets } = useQuery({
     queryFn: () => getAssets(String(companyId)),
     queryKey: ['company-assets', companyId],
     staleTime: 1000 * 60 * 5,
     enabled: !!companyId,
   })
 
-  const { data: locations } = useQuery({
+  const { data: locations, isFetching: isFetchingLocations } = useQuery({
     queryFn: () => getLocations(String(companyId)),
     queryKey: ['company-locations', companyId],
     staleTime: 1000 * 60 * 5,
@@ -30,7 +30,11 @@ export default function Content() {
       <CompanyHeader />
 
       <div className="flex w-full">
-        <TreeView assets={assets} locations={locations} />
+        <TreeView
+          assets={assets}
+          locations={locations}
+          isFetching={isFetchingAssets || isFetchingLocations}
+        />
 
         <div className="flex-1">
 

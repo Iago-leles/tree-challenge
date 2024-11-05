@@ -22,11 +22,13 @@ export interface IAsset {
   children: Array<ILocation | IAsset>;
 }
 
-interface TreeNode {
+export interface TreeNode {
   id: string;
   name: string;
   children: TreeNode[];
   type: string;
+  sensorType?: string | null;
+  status?: string | null;
 }
 
 export type AssetTreeNode = TreeNode & {
