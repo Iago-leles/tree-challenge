@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Header from "@/components/Header";
 import Content from "@/components/Content";
+import { SelectedComponentProvider } from "@/contexts/SelectedComponentContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,9 +19,11 @@ const queryClient = new QueryClient({
 export default function Home() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
+      <SelectedComponentProvider>
+        <Header />
 
-      <Content />
+        <Content />
+      </SelectedComponentProvider>
     </QueryClientProvider>
   )
 }

@@ -3,6 +3,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { IconChevronRight } from "@tabler/icons-react";
 
+import { useSelectedComponent } from "@/contexts/SelectedComponentContext";
+
+import { Types } from "@/enums";
+
 import { LocationTreeNode } from "@/types";
 
 import locationIcon from "@/public/icons/location.svg";
@@ -17,22 +21,37 @@ type TreeNodeProps = {
 
 export default function TreeNode({ node }: TreeNodeProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { setSelectedComponent } = useSelectedComponent()
+
+  const { LOCATION, ASSET, COMPONENT } = Types
 
   const hasChildren = node.children && node.children.length > 0;
 
   const getIcon = () => {
     const icons = {
-      asset: assetIcon,
-      component: componentIcon,
-      location: locationIcon,
+      [ASSET]: assetIcon,
+      [COMPONENT]: componentIcon,
+      [LOCATION]: locationIcon,
     }
 
     return icons[node.type as keyof typeof icons];
   };
 
+  const handleSelectComponent = () => {
+    if (node.children.length === 0 && node.type !== LOCATION) {
+      setSelectedComponent(node);
+    }
+  }
+
   return (
     <div className="ml-4 my-1">
-      <div className="flex items-center cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+      <div
+        className="flex items-center cursor-pointer"
+        onClick={() => {
+          setIsExpanded(!isExpanded);
+          handleSelectComponent()
+        }}
+      >
         {hasChildren && (
           <span>
             <motion.div

@@ -1,8 +1,11 @@
-import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 
-import thunderboltIcon from "@/public/icons/thunderbolt.svg"
-import exclamationIcon from "@/public/icons/exclamationCircle.svg"
+import ThunderboltIcon from "@/components/Icons/ThunderboltIcon"
+import ExclamationCircleIcon from "@/components/Icons/ExclamationCircleIcon"
+
+import { SensorStatus, SensorTypes } from "@/enums"
+
+import FilterButton from "./FilterButton"
 
 export default function CompanyHeader() {
   const searchParams = useSearchParams()
@@ -21,17 +24,17 @@ export default function CompanyHeader() {
       </div>
 
       <div className="flex gap-2">
-        <button className="flex items-center gap-2 border border-[#D8DFE6] rounded-sm py-1 px-2 text-[#77818C] font-semibold">
-          <Image src={thunderboltIcon} alt="energy" className="w-4 h-4" />
+        <FilterButton
+          icon={ThunderboltIcon}
+          label="Sensor de Energia"
+          type={SensorTypes.ENERGY}
+        />
 
-          Sensor de energia
-        </button>
-
-        <button className="flex items-center gap-2 border border-[#D8DFE6] py-1 px-2 text-[#77818C] font-semibold">
-          <Image src={exclamationIcon} alt="critical" className="w-4 h-4" />
-
-          Crítico
-        </button>
+        <FilterButton
+          icon={ExclamationCircleIcon}
+          label="Crítico"
+          type={SensorStatus.ALERT}
+        />
       </div>
     </div>
   )

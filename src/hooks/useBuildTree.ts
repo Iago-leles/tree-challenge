@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
+
+import { Types } from "@/enums";
 
 import { IAsset, ILocation } from "@/types";
 
@@ -11,16 +13,14 @@ export default function useBuildTree({
   assets = [],
   locations = [],
 }: UseBuildTreeProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [data, setData] = useState<IAsset[]>([]);
+  const { ASSET, COMPONENT, LOCATION } = Types;
 
-  useEffect(() => {
-    setIsLoading(true);
-
+  const { isLoading = true, data } = useMemo(() => {
     if (!locations.length && !assets.length) {
-      setData([]);
-      setIsLoading(false);
-      return;
+      return {
+        isLoading: false,
+        data: [],
+      };
     }
 
     const mappedHash: Record<string, IAsset> = {};
@@ -29,7 +29,7 @@ export default function useBuildTree({
       mappedHash[location.id] = {
         ...location,
         children: [],
-        type: "location",
+        type: LOCATION,
       };
     }
 
@@ -37,7 +37,7 @@ export default function useBuildTree({
       mappedHash[asset.id] = {
         ...asset,
         children: [],
-        type: asset?.sensorType ? "component" : "asset",
+        type: asset?.sensorType ? COMPONENT : ASSET,
       };
     }
 
@@ -53,12 +53,12 @@ export default function useBuildTree({
       }
     }
 
-    setData(
-      Object.values(mappedHash).filter(
+    return {
+      data: Object.values(mappedHash).filter(
         (node) => !node.parentId && !node.locationId
-      )
-    );
-    setIsLoading(false);
+      ),
+      isLoading: false,
+    };
   }, [assets, locations]);
 
   return { data, isLoading };

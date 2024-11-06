@@ -8,7 +8,7 @@ import { getCompanies } from "@/libs/companies"
 import logoImage from "@/public/logo.png"
 import goldIcon from "@/public/icons/gold.svg"
 
-import CompanyButton from "../CompanyButton"
+import CompanyButton from "./CompanyButton"
 
 export default function Header() {
   const { push } = useRouter();

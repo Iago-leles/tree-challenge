@@ -28,6 +28,8 @@ export interface TreeNode {
   children: TreeNode[];
   type: string;
   sensorType?: string | null;
+  sensorId?: string | null;
+  gatewayId?: string | null;
   status?: string | null;
 }
 

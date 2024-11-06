@@ -6,6 +6,7 @@ import { getLocations } from "@/libs/locations"
 
 import CompanyHeader from "./CompanyHeader"
 import TreeView from "./TreeView"
+import ComponentDetails from "./ComponentDetails"
 
 export default function Content() {
   const searchParams = useSearchParams()
@@ -29,15 +30,15 @@ export default function Content() {
     <div className="m-2 bg-white overflow-y-auto border-[#D8DFE6] border rounded-sm p-4">
       <CompanyHeader />
 
-      <div className="flex w-full">
+      <div className="flex w-full gap-2">
         <TreeView
           assets={assets}
           locations={locations}
           isFetching={isFetchingAssets || isFetchingLocations}
         />
 
-        <div className="flex-1">
-
+        <div className="flex-1 border-[#D8DFE6] border rounded-sm">
+          <ComponentDetails />
         </div>
       </div>
     </div>
