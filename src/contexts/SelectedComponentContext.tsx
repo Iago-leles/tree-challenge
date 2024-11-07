@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react";
 
 type SelectedComponentContextType = {
   selectedComponent: TreeNode | null,
-  setSelectedComponent: (node: TreeNode) => void
+  setSelectedComponent: (node: TreeNode | null) => void
 }
 
 const SelectedComponentContext = createContext<SelectedComponentContextType | undefined>(undefined);

@@ -1,10 +1,9 @@
-import Image from "next/image";
+import { IconBoltFilled } from "@tabler/icons-react";
 
 import { SensorStatus, SensorTypes } from "@/enums";
 
 import { TreeNode } from "@/types";
 
-import boltIcon from "@/public/icons/bolt.svg";
 
 export default function OperatingStatus({ node }: { node?: TreeNode }) {
   const { ENERGY } = SensorTypes
@@ -19,8 +18,14 @@ export default function OperatingStatus({ node }: { node?: TreeNode }) {
       alert: alertIcon,
     }
 
-    if (node?.sensorType === ENERGY && node.status === OPERATING) {
-      return <Image src={boltIcon} alt="icon" className="w-4 h-4 ml-2" />;
+    if (node?.sensorType === ENERGY) {
+      return (
+        <IconBoltFilled
+          size={16}
+          color={node.status === OPERATING ? '#52C41A' : '#ED3833'}
+          className="ml-1"
+        />
+      )
     }
 
     return icons[node?.status as keyof typeof icons];

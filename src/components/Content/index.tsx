@@ -1,8 +1,11 @@
+import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 
 import { getAssets } from "@/libs/assets"
 import { getLocations } from "@/libs/locations"
+
+import { useSelectedComponent } from "@/contexts/SelectedComponentContext"
 
 import CompanyHeader from "./CompanyHeader"
 import TreeView from "./TreeView"
@@ -11,6 +14,7 @@ import ComponentDetails from "./ComponentDetails"
 export default function Content() {
   const searchParams = useSearchParams()
   const companyId = searchParams.get('companyId')
+  const { setSelectedComponent } = useSelectedComponent()
 
   const { data: assets, isFetching: isFetchingAssets } = useQuery({
     queryFn: () => getAssets(String(companyId)),
@@ -25,6 +29,10 @@ export default function Content() {
     staleTime: 1000 * 60 * 5,
     enabled: !!companyId,
   })
+
+  useEffect(() => {
+    setSelectedComponent(null)
+  }, [companyId])
 
   return (
     <div className="m-2 bg-white overflow-y-auto border-[#D8DFE6] border rounded-sm p-4">

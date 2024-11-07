@@ -7,6 +7,7 @@ import { IAsset, ILocation, LocationTreeNode } from "@/types";
 
 import TreeNode from "./TreeNode";
 import './treeView.css'
+import useFilterTree from "@/hooks/useFilterTree";
 
 export default function TreeView({
   assets,
@@ -18,33 +19,24 @@ export default function TreeView({
   isFetching?: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState("");
+
   const {
     data: treeView,
     isLoading
   } = useBuildTree({ assets, locations }) as { data: LocationTreeNode[], isLoading: boolean };
 
+  const {
+    data: filteredTree,
+    isLoadingFilteredTree,
+    hasFilters
+  } = useFilterTree({ search: searchTerm, tree: treeView })
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  const filterTree = (node: LocationTreeNode): LocationTreeNode | null => {
-    const isMatch = node.name.toLowerCase().includes(searchTerm);
-    const filteredChildren = node.children
-      .map(filterTree)
-      .filter(Boolean) as LocationTreeNode[];
-
-    if (isMatch || filteredChildren.length) {
-      return { ...node, children: filteredChildren };
-    }
-    return null;
-  };
-
-  const filteredTree = searchTerm
-    ? treeView.map(filterTree).filter(Boolean) as LocationTreeNode[]
-    : treeView;
-
   const handleTreeViewContent = () => {
-    if (isLoading || isFetching) {
+    if (isLoading || isFetching || isLoadingFilteredTree) {
       return (
         <div className="flex items-center w-[100%] justify-center h-[60%]">
           <IconLoader className="slow-spin" color="blue" />
@@ -55,20 +47,28 @@ export default function TreeView({
     if (treeView.length && filteredTree.length === 0) {
       return (
         <div className="flex items-center w-[100%] justify-center h-[20%]">
-          <p className="text-gray-800">Nenhum resultado encontrado</p>
+          <p className="text-gray-800">
+            Nenhum resultado encontrado
+          </p>
         </div>
       );
     }
 
     return (
-      <div className="mt-2 max-h-[90%] overflow-y-auto scrollbar">
-        {filteredTree.map((node) => (<TreeNode key={node.id} node={node} />))}
+      <div className="mt-2 overflow-y-auto scrollbar scrollable-container">
+        {filteredTree.map((node) => (
+          <TreeNode
+            key={node.id}
+            node={node}
+            expanded={hasFilters}
+          />
+        ))}
       </div>
     );
   };
 
   return (
-    <div className="border-[#D8DFE6] w-[40%] h-[82vh] border rounded-sm">
+    <div className="border-[#D8DFE6] w-[40%] h-full border rounded-sm">
       <div className="border-b border-[#D8DFE6] w-full p-3 flex items-center">
         <input
           type="text"
@@ -78,7 +78,11 @@ export default function TreeView({
           onChange={handleSearch}
         />
 
-        <IconSearch color="#363C44" size={16} cursor='pointer' />
+        <IconSearch
+          color="#363C44"
+          size={16}
+          cursor='pointer'
+        />
       </div>
 
       {handleTreeViewContent()}

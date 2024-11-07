@@ -28,6 +28,10 @@
   background-color: #707070;
 }
 
+.scrollable-container {
+  max-height: calc(100vh - 200px);
+}
+
 /* styles.css */
 @keyframes slow-spin {
   0% {
