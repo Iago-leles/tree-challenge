@@ -70,7 +70,7 @@ export default function ComponentDetails() {
       </div>
 
       <div className="p-6">
-        <div className="flex gap-6 xl:h-[240px] h-[100%] pb-6 xl:flex-row flex-col">
+        <div className="flex gap-6 xl:h-[240px] h-[100%] pb-6 lg:flex-row flex-col">
           <ImagePreview image={imagePreview} setImage={setImagePreview} />
 
           <div className="flex-1 text-[#24292F] flex flex-col">
