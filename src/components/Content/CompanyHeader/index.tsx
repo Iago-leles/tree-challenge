@@ -12,7 +12,7 @@ export default function CompanyHeader() {
   const companyName = searchParams.get('companyName')
 
   return (
-    <div className="flex justify-between w-[100%] mb-2">
+    <div className="flex justify-between w-[100%] mb-2 flex-col sm:flex-row items-center">
       <div>
         <h1 className="text-xl text-[#24292F] font-semibold">
           Ativos

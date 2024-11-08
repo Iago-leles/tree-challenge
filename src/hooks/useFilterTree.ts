@@ -1,6 +1,6 @@
 import { LocationTreeNode } from "@/types";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 
 export default function useFilterTree({
   search,
@@ -10,6 +10,7 @@ export default function useFilterTree({
   tree: LocationTreeNode[];
 }) {
   const [urlFilters, setUrlFilters] = useState<string[]>([]);
+  const [searchTriggered, setSearchTriggered] = useState<string>("");
   const searchParams = useSearchParams();
   const query = searchParams.toString();
 
@@ -24,8 +25,12 @@ export default function useFilterTree({
     setUrlFilters(filters);
   }, [query]);
 
+  const handleSearch = useCallback(() => {
+    setSearchTriggered(search);
+  }, [search]);
+
   const filterTree = (node: LocationTreeNode): LocationTreeNode | null => {
-    const isMatch = node.name.toLowerCase().includes(search);
+    const isMatch = node.name.toLowerCase().includes(searchTriggered);
     const matchesAlertFilter = urlFilters.includes("alert")
       ? node.status === "alert"
       : true;
@@ -48,16 +53,16 @@ export default function useFilterTree({
 
   const { isLoadingFilteredTree, data, hasFilters } = useMemo(() => {
     const result =
-      search || urlFilters.length
+      searchTriggered || urlFilters.length
         ? (tree.map(filterTree).filter(Boolean) as LocationTreeNode[])
         : tree;
 
     return {
       isLoadingFilteredTree: false,
       data: result,
-      hasFilters: !!urlFilters.length || !!search,
+      hasFilters: !!urlFilters.length || !!searchTriggered,
     };
-  }, [search, urlFilters, tree]);
+  }, [searchTriggered, urlFilters, tree]);
 
-  return { data, isLoadingFilteredTree, hasFilters };
+  return { data, isLoadingFilteredTree, hasFilters, handleSearch };
 }

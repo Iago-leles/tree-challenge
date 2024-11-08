@@ -54,7 +54,7 @@ export default function Header() {
   }
 
   return (
-    <div className="w-screen bg-[#17192D] h-[48px] flex items-center px-4 justify-between">
+    <div className="w-screen bg-[#17192D] h-[80px] lg:h-[48px] flex items-center px-4 lg:justify-between justify-around flex-col sm:flex-row">
       <Image
         src={logoImage}
         alt="logo"
@@ -66,5 +66,6 @@ export default function Header() {
         {handleCompanies()}
       </div>
     </div>
+
   )
 }

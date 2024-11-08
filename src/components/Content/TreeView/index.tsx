@@ -28,7 +28,8 @@ export default function TreeView({
   const {
     data: filteredTree,
     isLoadingFilteredTree,
-    hasFilters
+    hasFilters,
+    handleSearch: handleFilterSearch
   } = useFilterTree({ search: searchTerm, tree: treeView })
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +69,7 @@ export default function TreeView({
   };
 
   return (
-    <div className="border-[#D8DFE6] w-[40%] h-full border rounded-sm">
+    <div className="border-[#D8DFE6] xl:w-[40%] w-[100%] max-w-[400px] xl:max-w-[40%] h-full border rounded-sm">
       <div className="border-b border-[#D8DFE6] w-full p-3 flex items-center">
         <input
           type="text"
@@ -76,12 +77,14 @@ export default function TreeView({
           className="focus:outline-none w-full  text-gray-800 placeholder-[#C1C9D2]"
           value={searchTerm}
           onChange={handleSearch}
+          onKeyDown={(e) => e.key === 'Enter' && handleFilterSearch()}
         />
 
         <IconSearch
           color="#363C44"
           size={16}
           cursor='pointer'
+          onClick={() => handleFilterSearch()}
         />
       </div>
 
