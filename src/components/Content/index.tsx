@@ -38,7 +38,7 @@ export default function Content() {
     <div className="m-2 h-[100%] bg-white overflow-y-auto border-[#D8DFE6] border rounded-sm p-4 flex flex-col">
       <CompanyHeader />
 
-      <div className="flex w-full gap-2 flex-1 flex-col sm:flex-row">
+      <div className="flex w-full gap-2 flex-1 flex-col-reverse sm:flex-row">
         <TreeView
           assets={assets}
           locations={locations}
